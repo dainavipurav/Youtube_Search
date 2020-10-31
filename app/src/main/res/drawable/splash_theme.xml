@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:drawable="@android:color/white"/>
+
+    <item
+        android:height="@dimen/material_dimen_xxxhdpi"
+        android:width="@dimen/material_dimen_xxxlarge"
+        android:gravity="center"
+        android:drawable="@color/colorPrimary"/>
+
+    <item
+        android:height="@dimen/material_dimen_small_xxxhdpi"
+        android:width="@dimen/material_dimen_small_xxxhdpi"
+        android:gravity="center"
+        android:drawable="@drawable/ic_play_arrow"/>
+
+</layer-list>
