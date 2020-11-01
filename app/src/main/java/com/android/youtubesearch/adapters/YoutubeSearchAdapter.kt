@@ -11,24 +11,13 @@ import com.android.youtubesearch.R
 import com.android.youtubesearch.models.VideoIDModel
 import com.android.youtubesearch.models.VideoModel
 import com.bumptech.glide.Glide
+import kotlin.collections.ArrayList
 
 class YoutubeSearchAdapter(
     var mContext: Context,
-    var mVideoList : List<VideoModel>
-) : RecyclerView.Adapter<YoutubeSearchAdapter.MyViewHolder>() {
-    public class MyViewHolder(mItemView: View) : RecyclerView.ViewHolder(mItemView) {
-        lateinit var mImageViewThumbnail : ImageView
-        lateinit var mTextViewTitle : TextView
-        lateinit var mTextViewDescription : TextView
-        lateinit var mTextViewTime : TextView
+    var mVideoList: ArrayList<VideoModel>
 
-        init {
-            mImageViewThumbnail = mItemView.findViewById(R.id.imageviewCustomItemLayout)
-            mTextViewTitle = mItemView.findViewById(R.id.textviewCustomItemLayoutHeading)
-            mTextViewDescription = mItemView.findViewById(R.id.textviewCustomItemLayoutChannel)
-            mTextViewTime = mItemView.findViewById(R.id.textviewCustomItemLayoutViews)
-        }
-    }
+) : RecyclerView.Adapter<YoutubeSearchAdapter.MyViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
         return MyViewHolder(
@@ -54,4 +43,20 @@ class YoutubeSearchAdapter(
     override fun getItemCount(): Int {
         return mVideoList.size
     }
+
+    class MyViewHolder(mItemView: View) : RecyclerView.ViewHolder(mItemView) {
+        var mImageViewThumbnail: ImageView =
+            mItemView.findViewById(R.id.imageviewCustomItemLayout)
+
+        var mTextViewTitle: TextView =
+            mItemView.findViewById(R.id.textviewCustomItemLayoutHeading)
+
+        var mTextViewDescription: TextView =
+            mItemView.findViewById(R.id.textviewCustomItemLayoutChannel)
+
+        var mTextViewTime: TextView =
+            mItemView.findViewById(R.id.textviewCustomItemLayoutViews)
+    }
+
+
 }

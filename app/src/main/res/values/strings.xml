@@ -3,4 +3,7 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="text_string_search">Search</string>
+    <string name="text_string_please_check_network">Please Check network connection</string>
+    <string name="text_string_no_data_found">No Data Found</string>
+    <string name="text_string_search_youtune_videos">Search Youtube Videos</string>
 </resources>
