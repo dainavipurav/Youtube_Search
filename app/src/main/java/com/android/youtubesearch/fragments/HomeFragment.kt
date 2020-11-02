@@ -16,6 +16,7 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import com.android.youtubesearch.R
 import com.android.youtubesearch.adapters.YoutubeSearchAdapter
+import com.android.youtubesearch.models.ErrorModel
 import com.android.youtubesearch.models.ResponseModel
 import com.android.youtubesearch.models.VideoModel
 import com.android.youtubesearch.network.APIClient
@@ -25,14 +26,14 @@ import retrofit2.Callback
 import retrofit2.Response
 
 
-class HomeFragment : Fragment(R.layout.fragment_home){
+class HomeFragment : Fragment(R.layout.fragment_home) {
 
     private lateinit var mConstraintLayoutHome: ConstraintLayout
     private lateinit var mRecyclerViewHome: RecyclerView
 
     private lateinit var mYoutubeSearchAdapter: YoutubeSearchAdapter
     private var mVideoModelList: ArrayList<VideoModel> = ArrayList()
-    var mSearchWord : String = ""
+    var mSearchWord: String = ""
     private lateinit var mConnectivityManager: ConnectivityManager
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -47,8 +48,8 @@ class HomeFragment : Fragment(R.layout.fragment_home){
         setHasOptionsMenu(true)
     }
 
-    fun getSearchResult(word: String){
-        if (!word.equals("")){
+    fun getSearchResult(word: String) {
+        if (!word.equals("")) {
             context?.let {
                 APIClient.instance.searchVideo(
                     API_KEY,
@@ -62,11 +63,21 @@ class HomeFragment : Fragment(R.layout.fragment_home){
                         if (response.isSuccessful) {
                             val mResponseModel: ResponseModel? = response.body()
                             if (mResponseModel != null) {
-                                mVideoModelList.addAll(mResponseModel.items)
-                                setAdapter(mVideoModelList)
+                                val mErrorModel: ErrorModel? = mResponseModel.error
+                                if (mErrorModel != null) {
+                                    Toast.makeText(it, mErrorModel.message, Toast.LENGTH_SHORT)
+                                        .show()
+                                } else {
+                                    mVideoModelList.addAll(mResponseModel.items)
+                                    setAdapter(mVideoModelList)
+                                }
 
                             } else {
-                                Toast.makeText(it, getString(R.string.text_string_no_data_found), Toast.LENGTH_SHORT).show()
+                                Toast.makeText(
+                                    it,
+                                    getString(R.string.text_string_no_data_found),
+                                    Toast.LENGTH_SHORT
+                                ).show()
                             }
                         }
                     }
@@ -80,7 +91,7 @@ class HomeFragment : Fragment(R.layout.fragment_home){
         }
     }
 
-    fun setAdapter(mSearchaVideosList : ArrayList<VideoModel>){
+    fun setAdapter(mSearchaVideosList: ArrayList<VideoModel>) {
         context?.let {
             mYoutubeSearchAdapter = YoutubeSearchAdapter(
                 it,
@@ -96,9 +107,10 @@ class HomeFragment : Fragment(R.layout.fragment_home){
 
         inflater.inflate(R.menu.action_menu, menu)
 
-        val mMenuItem : MenuItem = menu.findItem(R.id.action_search)
+        val mMenuItem: MenuItem = menu.findItem(R.id.action_search)
 
-        val mSearchView : androidx.appcompat.widget.SearchView = mMenuItem.actionView as androidx.appcompat.widget.SearchView
+        val mSearchView: androidx.appcompat.widget.SearchView =
+            mMenuItem.actionView as androidx.appcompat.widget.SearchView
         mSearchView.queryHint = getString(R.string.text_string_search_youtune_videos)
         mSearchView.imeOptions = EditorInfo.IME_ACTION_SEARCH
 
@@ -114,7 +126,11 @@ class HomeFragment : Fragment(R.layout.fragment_home){
                 if (isNetworkConnected()) {
                     getSearchResult(mSearchWord)
                 } else {
-                    Toast.makeText(context, getString(R.string.text_string_please_check_network), Toast.LENGTH_SHORT)
+                    Toast.makeText(
+                        context,
+                        getString(R.string.text_string_please_check_network),
+                        Toast.LENGTH_SHORT
+                    )
                         .show()
                 }
                 return false
@@ -125,14 +141,18 @@ class HomeFragment : Fragment(R.layout.fragment_home){
                 if (isNetworkConnected()) {
                     if (mSearchWord.length >= 3) {
                         getSearchResult(mSearchWord)
-                    }else{
+                    } else {
                         context?.let {
                             mVideoModelList.clear()
                             setAdapter(mVideoModelList)
                         }
                     }
                 } else {
-                    Toast.makeText(context, getString(R.string.text_string_please_check_network), Toast.LENGTH_SHORT)
+                    Toast.makeText(
+                        context,
+                        getString(R.string.text_string_please_check_network),
+                        Toast.LENGTH_SHORT
+                    )
                         .show()
                 }
                 return true
